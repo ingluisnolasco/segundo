@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentación de Google Pantalla Completa (Manual)</title>
+    <style>
+        /* CSS para que ocupe toda la pantalla */
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            /* Asegura que el HTML y el Body usen toda la altura de la ventana */
+            width: 100%;
+            /* Asegura que el HTML y el Body usen todo el ancho de la ventana */
+            overflow: hidden;
+            /* Oculta barras de desplazamiento innecesarias */
+        }
+
+        iframe {
+            /* Esto fuerza al iframe a usar el 100% del espacio disponible */
+            width: 100%;
+            height: 100%;
+            border: none;
+            /* Elimina el borde predeterminado del iframe */
+        }
+    </style>
+</head>
+
+<body>
+
+    <iframe
+        src="https://docs.google.com/presentation/d/e/2PACX-1vTwv-VPxFdxdAR_ug965P-yh4QCb7gnmez65cnMqUh6PsPrpO0ltSLeoMzQiITSbxb5JypzgZ44GQBS/pubembed?start=false&loop=false&delayms=60000"
+        frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true">
+    </iframe>
+
+</body>
+
+</html>
