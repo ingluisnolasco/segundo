@@ -1,110 +1,622 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Nos mudamos a Moodle</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <title>Guía de Estudio Interactiva - Matemáticas</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <style>
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa, #e4ecf3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: #333;
+        :root {
+            --azul: #2f80ed;
+            --fondo: #f6f9fc;
+            --card: #ffffff;
+            --acento: #ffd166;
+            --gris: #6b7280;
+            --verde: #2ecc71;
+            --rojo: #ef476f;
+            --sombra: 0 8px 20px rgba(31, 41, 55, 0.08);
+            --radio: 12px;
         }
 
-        .border-wrap {
-            background: linear-gradient(135deg, #0056d2, #00b4d8);
-            padding: 2px;
-            border-radius: 20px;
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(180deg, var(--fondo), #eef6ff 60%);
+            color: #0f172a;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 28px;
+        }
+
+        header {
+            max-width: 1000px;
+            margin: 0 auto 18px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            color: var(--azul);
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+            color: var(--gris);
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 18px auto 60px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
         }
 
         .card {
-            background: #ffffff;
-            padding: 3rem 2.5rem;
-            border-radius: 18px;
-            text-align: center;
-            max-width: 420px;
-            width: 90%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            background: var(--card);
+            border-radius: var(--radio);
+            padding: 18px;
+            box-shadow: var(--sombra);
+            border: 1px solid rgba(15, 23, 42, 0.04);
         }
 
-        h1 {
-            margin-top: 0;
-            font-size: 1.8rem;
-            color: #2c3e50;
+        .card h2 {
+            margin: 0 0 10px;
+            color: var(--azul);
+            font-size: 20px;
         }
 
-        p {
-            font-size: 1rem;
-            line-height: 1.6;
-            margin: 1.2rem 0 2rem;
-            color: #555;
+        .conceptos {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
         }
 
-        a.button {
-            display: inline-block;
-            padding: 0.9rem 1.8rem;
+        .chip {
+            background: #eef7ff;
+            color: var(--azul);
+            padding: 8px 12px;
             border-radius: 999px;
-            background: linear-gradient(135deg, #0056d2, #0077ff);
-            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .consejos {
+            background: linear-gradient(90deg, #fffaf0, #fff7e6);
+            border-left: 4px solid var(--acento);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            color: #4b3b00;
+        }
+
+        .consejos ul {
+            margin: 8px 0 0;
+            padding-left: 18px;
+            color: #2b2b2b
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 10px 14px;
+            background: var(--azul);
+            color: white;
+            border-radius: 10px;
             text-decoration: none;
+            cursor: pointer;
+            border: none;
+            font-weight: 700;
+            box-shadow: 0 6px 14px rgba(47, 128, 237, 0.18);
+        }
+
+        .btn.secondary {
+            background: #fff;
+            color: var(--azul);
+            border: 1px solid rgba(47, 128, 237, 0.12);
+            box-shadow: none;
+            font-weight: 700;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #e6eefc, transparent);
+            margin: 18px 0;
+            border-radius: 2px
+        }
+
+        .ejemplo {
+            background: #f3f9ff;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            color: #0b3a66;
             font-weight: 600;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        a.button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 86, 210, 0.3);
+        /* Modal */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1200;
+            padding: 20px;
         }
 
-        .signature {
-            margin-top: 2.5rem;
-            font-size: 0.95rem;
-            color: #444;
+        .modal {
+            width: 100%;
+            max-width: 760px;
+            background: var(--card);
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 20px 50px rgba(2, 6, 23, 0.45);
+            transform: translateY(8px);
+            animation: pop .18s ease-out;
+            position: relative;
         }
 
-        .signature span {
-            display: block;
-            margin-top: 0.3rem;
-            font-weight: 600;
-            color: #2c3e50;
+        @keyframes pop {
+            from {
+                opacity: 0;
+                transform: translateY(18px) scale(.99)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1)
+            }
         }
 
-        .footer {
-            margin-top: 1.2rem;
-            font-size: 0.85rem;
-            color: #888;
+        .modal header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .modal h3 {
+            margin: 0;
+            color: var(--azul)
+        }
+
+        .close {
+            background: #fff;
+            border: 1px solid rgba(15, 23, 42, 0.06);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: inline-grid;
+            place-items: center;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--gris)
+        }
+
+        .modal .contenido {
+            margin-top: 12px
+        }
+
+        .modal ol {
+            padding-left: 18px;
+            margin: 8px 0 0
+        }
+
+        .soluciones {
+            margin-top: 12px;
+            background: #f8fff4;
+            border-left: 4px solid var(--verde);
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+            color: #0b3a1a;
+            font-weight: 600
+        }
+
+        .mostrar-sol {
+            margin-top: 12px;
+            display: inline-block;
+            padding: 8px 12px;
+            background: var(--azul);
+            color: #fff;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        footer {
+            max-width: 1000px;
+            margin: 20px auto 60px;
+            text-align: center;
+            color: var(--gris)
+        }
+
+        /* Responsive */
+        @media (max-width:640px) {
+            body {
+                padding: 16px
+            }
+
+            .card {
+                padding: 14px
+            }
+
+            .modal {
+                padding: 14px
+            }
         }
     </style>
+    <!-- Configuración mínima para MathJax (renderiza TeX entre \( ... \) y $ ... $) -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$', '$']],
+                displayMath: [['\\[', '\\]']],
+                packages: { '[+]': [] }
+            },
+            options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
+        };
+    </script>
+
+    <!-- Carga de MathJax v3 desde CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
 </head>
+
 <body>
+    <header>
+        <h1>Guía de Estudio Interactiva para el Examen</h1>
+        <p>Consejos rápidos y ejercicios de práctica con soluciones ocultas para autoevaluarte</p>
+    </header>
 
-<div class="border-wrap">
-    <div class="card">
-        <h1>Nos mudamos a Moodle</h1>
-        <p>
-            Todo nuestro contenido ahora se encuentra en nuestra nueva
-            plataforma educativa. Haz clic abajo para continuar.
-        </p>
+    <main>
+        <!-- 1 Ecuaciones -->
+        <section class="card" id="ecuaciones">
+            <h2>Ecuaciones de primer grado</h2>
+            <div class="conceptos">
+                <div class="chip">Despejar</div>
+                <div class="chip">Operaciones inversas</div>
+                <div class="chip">Comprobar</div>
+            </div>
+            <div class="consejos">
+                <strong>Pasos que ayudan a resolver ecuaciones como 255 = 3x + 9</strong>
+                <ul>
+                    <li>1. Pasa términos constantes al otro lado usando suma/resta para aislar el término con la
+                        incógnita</li>
+                    <li>2. Divide o multiplica para dejar la incógnita sola</li>
+                    <li>3. Comprueba sustituyendo la solución en la ecuación original</li>
+                </ul>
+            </div>
+            <div class="ejemplo">Ejemplo tipo examen: 255 = 3x + 9</div>
+            <button class="btn" onclick="openModal('m1')">Practicar ecuaciones</button>
+        </section>
 
-        <a class="button" href="https://moodle.nube.do" target="_blank">
-            Ir a Moodle
-        </a>
+        <!-- 2 Medidas de posición -->
+        <section class="card" id="medidas">
+            <h2>Medidas de posición</h2>
+            <div class="conceptos">
+                <div class="chip">Media</div>
+                <div class="chip">Mediana</div>
+                <div class="chip">Moda</div>
+            </div>
+            <div class="consejos">
+                <strong>Pasos para calcular media, mediana y moda</strong>
+                <ul>
+                    <li>Media: suma todos los valores y divide por la cantidad de observaciones</li>
+                    <li>Mediana: ordena los datos; si hay número impar toma el central; si es par promedia los dos
+                        centrales</li>
+                    <li>Moda: identifica el/los valor(es) que más se repiten</li>
+                </ul>
+            </div>
+            <div class="ejemplo">Ejemplo tipo examen: datos con hasta 10 observaciones</div>
+            <button class="btn" onclick="openModal('m2')">Practicar medidas</button>
+        </section>
 
-        <div class="signature">
-            Atentamente,
-            <span>Ing. Luis Antonio Nolasco Gómez</span>
+        <!-- 3 Clasificación de conjuntos -->
+        <section class="card" id="conjuntos">
+            <h2>Tipos de números entre -8 y 8</h2>
+            <div class="conceptos">
+                <div class="chip">Naturales</div>
+                <div class="chip">Enteros</div>
+                <div class="chip">Racionales</div>
+                <div class="chip">Irracionales</div>
+                <div class="chip">Reales</div>
+            </div>
+            <div class="consejos">
+                <strong>Cómo abordar la pregunta de listar números</strong>
+                <ul>
+                    <li>Para cada conjunto piensa si hay finitos o infinitos números en el intervalo</li>
+                    <li>Si hay más de 10, escribe 10 ejemplos y explica que hay infinitos (por ejemplo los racionales y
+                        reales)</li>
+                    <li>Para irracionales da ejemplos concretos dentro del intervalo (por ejemplo \(\sqrt{2}\) si cabe)
+                        y explica por qué hay infinitos</li>
+                </ul>
+            </div>
+            <div class="ejemplo">Ejercicio tipo examen: escribir hasta 10 y justificar si hay más</div>
+            <button class="btn" onclick="openModal('m3')">Practicar clasificación</button>
+        </section>
+
+        <!-- 4 Representación y 5 Redondeo -->
+        <section class="card" id="recta-redondeo">
+            <h2>Recta numérica y redondeo</h2>
+            <div class="conceptos">
+                <div class="chip">Ubicar coordenadas</div>
+                <div class="chip">Decimales</div>
+                <div class="chip">Reglas de redondeo</div>
+            </div>
+            <div class="consejos">
+                <strong>Consejos rápidos</strong>
+                <ul>
+                    <li>Para representar en la recta numérica marca la escala y coloca cada número en su posición
+                        relativa</li>
+                    <li>Redondeo: mira la cifra siguiente a la posición pedida; si es 5 o más sube la cifra, si es menor
+                        la dejas</li>
+                    <li>Practica redondeo a décima, centésima, milésima y a órdenes enteros como decena, centena y
+                        unidad de millar</li>
+                </ul>
+            </div>
+            <div class="ejemplo">Ejercicios tipo examen: varios números reales y redondeos mixtos</div>
+            <button class="btn" onclick="openModal('m4')">Practicar recta y redondeo</button>
+        </section>
+
+        <!-- 6 Períodos y 7 Notación científica y 8,9,10 Geometría en plano -->
+        <section class="card" id="periodos-cientifica-geo">
+            <h2>Períodos, notación científica y geometría en el plano</h2>
+            <div class="conceptos">
+                <div class="chip">Números periódicos</div>
+                <div class="chip">Notación científica</div>
+                <div class="chip">Área y perímetro</div>
+                <div class="chip">Coordenadas</div>
+            </div>
+            <div class="consejos">
+                <strong>Guía para los ejercicios complejos</strong>
+                <ul>
+                    <li>Períodos: busca patrones repetidos en las cifras decimales; si hay repetición exacta hay período
+                        y puedes escribir la fracción periódica</li>
+                    <li>Notación científica: mueve la coma hasta tener un número entre 1 y 10 y cuenta los lugares para
+                        la potencia de 10</li>
+                    <li>Área y perímetro de figuras con puntos: calcula distancias entre puntos con la fórmula de
+                        distancia; usa Pitágoras para triángulos rectángulos</li>
+                    <li>Para el cuadrado de lado \(\sqrt{8}\) calcula lado, perímetro y área exactos y luego aproxima al
+                        centésimo</li>
+                </ul>
+            </div>
+            <div class="ejemplo">Ejercicios tipo examen: números con patrones periódicos, notación científica y figuras
+                por coordenadas</div>
+            <button class="btn" onclick="openModal('m5')">Practicar períodos y geometría</button>
+        </section>
+    </main>
+
+    <!-- Modales -->
+    <div id="overlay" class="overlay" onclick="closeAll(event)">
+        <!-- Modal 1: Ecuaciones -->
+        <div id="m1" class="modal" style="display:none" onclick="event.stopPropagation()">
+            <header>
+                <h3>Ecuaciones de primer grado - práctica</h3>
+                <div class="close" onclick="closeModal('m1')">✕</div>
+            </header>
+            <div class="contenido">
+                <p>Resuelve los siguientes ejercicios. Intenta primero y luego pulsa <strong>Mostrar
+                        soluciones</strong>.</p>
+                <ol>
+                    <li>Resuelve: <strong>255 = 3x + 9</strong></li>
+                    <li>Resuelve: <strong>5x - 7 = 18</strong></li>
+                    <li>Resuelve: <strong>12 = 4x + 8</strong></li>
+                    <li>Resuelve: <strong>3(x + 4) = 27</strong></li>
+                </ol>
+                <button class="mostrar-sol" onclick="toggleSol('s1')">Mostrar soluciones</button>
+                <div id="s1" class="soluciones">
+                    <ol>
+                        <li>x = 82</li>
+                        <li>x = 5</li>
+                        <li>x = 1</li>
+                        <li>x = 5</li>
+                    </ol>
+                </div>
+            </div>
         </div>
 
-        <div class="footer">
-            Gracias por acompañarnos 💙
+        <!-- Modal 2: Medidas -->
+        <div id="m2" class="modal" style="display:none" onclick="event.stopPropagation()">
+            <header>
+                <h3>Medidas de posición - práctica</h3>
+                <div class="close" onclick="closeModal('m2')">✕</div>
+            </header>
+            <div class="contenido">
+                <p>Calcula media, mediana y moda para cada conjunto</p>
+                <ol>
+                    <li>3, 5, 7, 7, 9</li>
+                    <li>2, 4, 6, 8, 10</li>
+                    <li>1, 2, 2, 3, 4, 4, 4</li>
+                    <li>5, 5, 5, 5 (observa qué pasa con la moda)</li>
+                </ol>
+                <button class="mostrar-sol" onclick="toggleSol('s2')">Mostrar soluciones</button>
+                <div id="s2" class="soluciones">
+                    <ol>
+                        <li>Media = 6.2; Mediana = 7; Moda = 7</li>
+                        <li>Media = 6; Mediana = 6; Moda = no hay (todos distintos)</li>
+                        <li>Media ≈ 2.857; Mediana = 3; Moda = 4</li>
+                        <li>Media = 5; Mediana = 5; Moda = 5</li>
+                    </ol>
+                </div>
+            </div>
         </div>
+
+        <!-- Modal 3: Clasificación -->
+        <div id="m3" class="modal" style="display:none" onclick="event.stopPropagation()">
+            <header>
+                <h3>Clasificación de números - práctica</h3>
+                <div class="close" onclick="closeModal('m3')">✕</div>
+            </header>
+            <div class="contenido">
+                <p>Escribe hasta 10 ejemplos y explica si hay más</p>
+                <ol>
+                    <li>Naturales mayores que −8 y menores que 8</li>
+                    <li>Enteros mayores que −8 y menores que 8</li>
+                    <li>Racionales mayores que −8 y menores que 8</li>
+                    <li>Irracionales mayores que −8 y menores que 8</li>
+                    <li>Reales mayores que −8 y menores que 8</li>
+                </ol>
+                <button class="mostrar-sol" onclick="toggleSol('s3')">Mostrar soluciones / ejemplos</button>
+                <div id="s3" class="soluciones">
+                    <ol>
+                        <li>Naturales: 0,1,2,3,4,5,6,7 (si se considera 0 natural). Menos de 10, se escriben todos</li>
+                        <li>Enteros: −7,−6,−5,−4,−3,−2,−1,0,1,2,3,4,5,6,7 (más de 10; escribe 10 y explica que hay más)
+                        </li>
+                        <li>Racionales: ejemplos 0, 1/2, −3/4, 2, 7/3, etc. Hay infinitos; escribe 10 y explica que
+                            existen fracciones entre cualquier par</li>
+                        <li>Irracionales: ejemplos dentro del intervalo: √2 ≈1.414, −√2, π−3 ≈0.14159, etc. Hay
+                            infinitos; escribe 10 ejemplos aproximados y explica</li>
+                        <li>Reales: incluye racionales e irracionales; hay infinitos; escribe 10 ejemplos y explica</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal 4: Recta y redondeo -->
+        <div id="m4" class="modal" style="display:none" onclick="event.stopPropagation()">
+            <header>
+                <h3>Recta numérica y redondeo - práctica</h3>
+                <div class="close" onclick="closeModal('m4')">✕</div>
+            </header>
+            <div class="contenido">
+                <p>Representa y redondea los siguientes números</p>
+                <ol>
+                    <li>Coloca en la recta: −2.5, 0, 1.75, 3.1416</li>
+                    <li>Redondea a la décima: 3.1416</li>
+                    <li>Redondea a la centésima: 2.71828</li>
+                    <li>Redondea a la milésima: 0.333333</li>
+                    <li>Redondea a la decena: 47</li>
+                    <li>Redondea a la centena: 1234</li>
+                    <li>Redondea a la unidad de millar: 9876</li>
+                </ol>
+                <button class="mostrar-sol" onclick="toggleSol('s4')">Mostrar soluciones</button>
+                <div id="s4" class="soluciones">
+                    <ol>
+                        <li>Ubicaciones: marca escala con unidades y coloca cada número en su posición relativa</li>
+                        <li>3.1416 → 3.1</li>
+                        <li>2.71828 → 2.72</li>
+                        <li>0.333333 → 0.333</li>
+                        <li>47 → 50</li>
+                        <li>1234 → 1200</li>
+                        <li>9876 → 10000</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal 5: Períodos, notación científica y geometría -->
+        <div id="m5" class="modal" style="display:none" onclick="event.stopPropagation()">
+            <header>
+                <h3>Períodos, notación científica y geometría - práctica</h3>
+                <div class="close" onclick="closeModal('m5')">✕</div>
+            </header>
+            <div class="contenido">
+                <p>Ejercicios variados similares a los del examen</p>
+                <ol>
+                    <li>Indica si tienen período y escribe la forma periódica:
+                        <ol type="a">
+                            <li>14.233223322332...</li>
+                            <li>32.141441444144441...</li>
+                            <li>5.8360083600836008360083...</li>
+                            <li>72.729072900729000729000072...</li>
+                        </ol>
+                    </li>
+                    <li>Escribe en notación científica: 0.00056 y 45 000</li>
+                    <li>Calcula perímetro y área exactos de un cuadrado de lado √8 y aproxima al centésimo</li>
+                    <li>Dados puntos A=(1,2), B=(1,6), C=(5,6), D=(5,2) determina figura, perímetro y área</li>
+                    <li>Identifica la figura formada por A=(3,2), B=(3,6), C=(7,6), D=(7,2)</li>
+                </ol>
+                <button class="mostrar-sol" onclick="toggleSol('s5')">Mostrar soluciones / pistas</button>
+                <div id="s5" class="soluciones">
+                    <ol>
+                        <li>
+                            a) 14.233223322332... → tiene período "322" repetido; escribir como 14,\(\overline{322}\) y
+                            convertir a fracción periódica usando técnicas de restas de potencias de 10
+                            <br>
+                            b) 32.141441444144441... → período "4" con crecimiento en bloques; identificar patrón y
+                            escribir la parte periódica
+                            <br>
+                            c) 5.8360083600836008360083... → período "83600" repetido; escribir como
+                            5,\(\overline{83600}\)
+                            <br>
+                            d) 72.729072900729000729000072... → patrón con ceros crecientes; identificar el bloque
+                            repetido y expresar como periódico si aplica
+                        </li>
+                        <li>0.00056 = \(5.6\times10^{-4}\) ; 45\,000 = \(4.5\times10^{4}\)</li>
+                        <li>Cuadrado lado \(=\sqrt{8}\). Perímetro exacto \(=4\sqrt{8}\). Área exacta
+                            \(=(\sqrt{8})^2=8\). Aproximar al centésimo: perímetro ≈ \(4\times2.828427=11.31\) (aprox)
+                        </li>
+                        <li>Los puntos forman un rectángulo 4×4. Perímetro = 18? Revisa distancias con fórmula; área =
+                            base×altura</li>
+                        <li>Los puntos forman un rectángulo; identifica lados iguales y calcula área y perímetro</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
     </div>
-</div>
 
+    <footer>
+        <p><strong>Consejo final</strong> Estudia los pasos, practica con los ejercicios del modal y comprueba tus
+            respuestas con las soluciones ocultas</p>
+    </footer>
+
+    <script>
+        // Abrir modal específico
+        function openModal(id) {
+            document.getElementById('overlay').style.display = 'flex';
+            const modal = document.getElementById(id);
+            if (modal) {
+                // ocultar todos los modales primero
+                document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+                modal.style.display = 'block';
+                // ocultar soluciones dentro del modal
+                modal.querySelectorAll('.soluciones').forEach(s => s.style.display = 'none');
+            }
+        }
+        // Cerrar modal
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.style.display = 'none';
+            // si no hay modal visible, ocultar overlay
+            const anyVisible = Array.from(document.querySelectorAll('.modal')).some(m => m.style.display === 'block');
+            if (!anyVisible) document.getElementById('overlay').style.display = 'none';
+        }
+        // Cerrar al hacer click fuera
+        function closeAll(e) {
+            if (e.target.id === 'overlay') {
+                document.getElementById('overlay').style.display = 'none';
+                document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+            }
+        }
+        // Toggle soluciones
+        function toggleSol(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+            // scroll to solutions
+            if (el.style.display === 'block') el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        // Cerrar con Escape
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                document.getElementById('overlay').style.display = 'none';
+                document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+            }
+        });
+    </script>
 </body>
+
 </html>
